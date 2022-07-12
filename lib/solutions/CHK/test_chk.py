@@ -29,6 +29,7 @@ assert checkout("AAAAA") == 200
 assert checkout("AAAAAAAA") == 330
 assert checkout("AAAAAAAAA") == 380
 assert checkout("AAAAAAAAAA") == 400
-assert checkout("AAAAAAAAAAA") == 440
+assert checkout("AAAAAAAAAAA") == 440 # cheaper than 5 + 2 * 3, assume rule generally holds so don't need to check all combos of discounts
+
 
 
