@@ -15,7 +15,7 @@ def checkout(skus):
     for sku, count in counts.items():
         sku_prices = PRICES.get(sku)
         if not sku_prices:
-            continue
+            return -1
 
         # Check for specials
         special = sku_prices["special"]
@@ -26,6 +26,7 @@ def checkout(skus):
         total += count * sku_prices["price"]
 
     return total
+
 
 
 
