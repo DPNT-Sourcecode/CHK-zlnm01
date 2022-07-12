@@ -22,7 +22,6 @@ def checkout(skus):
     for sku in PRICE_ORDER:
         if sku not in counts:
             continue
-        print(sku, counts)
 
         # Apply best price to total
         best_price = _calculate_prices(PRICES[sku], counts[sku])
@@ -32,6 +31,8 @@ def checkout(skus):
         if bonus:
             # Assumes all bonus letters are the same
             counts.subtract(bonus)
+            if counts[bonus[0]] < 0:
+                counts[bonus[0]] = 0
 
     return total
 
@@ -60,5 +61,6 @@ def _calculate_prices(sku_prices: dict, count) -> Tuple[int, str]:
 def _calculate_bonus(count, offer_count, bonus, default_price) -> Tuple[int, str]:
     special_count = count // offer_count
     return (count * default_price, bonus * special_count)
+
 
 
