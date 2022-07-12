@@ -19,9 +19,11 @@ def checkout(skus):
         if not sku_prices:
             return -1
 
-
         # Add remaining count
-        total +=
+        prices = _calculate_prices(sku_prices, count)
+        prices.sort(key=lambda t: t[0])
+        # Apply best price to total
+        total += prices[-1][0]
 
     return total
 
@@ -47,3 +49,4 @@ def _calculate_special_price(count, offer_count, special_price, default_price) -
 def _calculate_bonus(count, special_count, bonus, default_price) -> Tuple[int, str]:
     special_count = count % special_count
     return (count * default_price, bonus * special_count)
+
