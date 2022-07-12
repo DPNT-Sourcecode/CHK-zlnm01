@@ -20,17 +20,19 @@ assert checkout("a") == -1
 # CHK_R2 test
 
 # EEB asserts
-print(checkout("EEB"))
-assert checkout("EEB") == 80
-assert checkout("BEE") == 80
-assert checkout("EBE") == 80
-assert checkout("EBEEBBEB") == 125
+# print(checkout("EEB"))
+# assert checkout("EEB") == 80
+# assert checkout("BEE") == 80
+# assert checkout("EBE") == 80
+# assert checkout("EBEEBBEB") == 125
 
 # Multi A asserts
 assert checkout("AAAAA") == 200
+print(checkout("AAAAAAAA"))
 assert checkout("AAAAAAAA") == 330
 assert checkout("AAAAAAAAA") == 380
 assert checkout("AAAAAAAAAA") == 400
 assert checkout("AAAAAAAAAAA") == 440 # cheaper than 5 + 2 * 3, assume rule generally holds so don't need to check all combos of discounts
+
 
 
