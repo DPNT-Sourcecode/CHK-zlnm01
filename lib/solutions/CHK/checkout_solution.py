@@ -13,6 +13,7 @@ PRICE_ORDER = ("E", "D", "C", "B", "A")
 # noinspection PyUnusedLocal
 # skus = unicode string
 def checkout(skus):
+    print("NEW\n")
     counts = Counter(skus)
     # Check for any invalid items
     if not set(PRICES.keys()).issuperset(counts.keys()):
@@ -20,6 +21,7 @@ def checkout(skus):
 
     total = 0
     for sku in PRICE_ORDER:
+        print(counts)
         if sku not in counts:
             continue
 
@@ -28,7 +30,7 @@ def checkout(skus):
         #     return -1
 
         prices = _calculate_prices(sku_prices, counts[sku])
-        prices.sort(key=lambda t: t[0])
+        prices.sort(key=lambda t: (t[0], t[1]))
 
         # Apply best price to total
         best_price = prices[0]
@@ -37,8 +39,8 @@ def checkout(skus):
         bonus = best_price[1]
         if bonus:
             # Assumes all bonus letters are the same
-            counts[bonus[0]] -= len(bonus)
-
+            print(bonus)
+            counts.subtract(bonus)
 
     return total
 
@@ -53,17 +55,18 @@ def _calculate_prices(sku_prices: dict, count) -> List[Tuple[int, str]]:
         elif "bonus" in special:
             prices.append(_calculate_bonus(count, special["count"], special["bonus"], default_price))
     # Add normal price
-    prices.append((count * sku_prices["price"], None))
+    prices.append((count * sku_prices["price"], ""))
     return prices
 
 
-def _calculate_special_price(count, offer_count, special_price, default_price) -> Tuple[int, None]:
+def _calculate_special_price(count, offer_count, special_price, default_price) -> Tuple[int, str]:
     special_count, rem = divmod(count, offer_count)
-    return (special_count * special_price + rem * default_price, None)
+    return (special_count * special_price + rem * default_price, "")
 
 def _calculate_bonus(count, special_count, bonus, default_price) -> Tuple[int, str]:
     special_count = count % special_count
     return (count * default_price, bonus * special_count)
+
 
 
 
