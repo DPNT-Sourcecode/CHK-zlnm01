@@ -14,14 +14,18 @@ PRICE_ORDER = ("E", "D", "C", "B", "A")
 # skus = unicode string
 def checkout(skus):
     counts = Counter(skus)
+    # Check for any invalid items
+    if not set(PRICES.keys()).issuperset(counts.keys()):
+        return -1
+
     total = 0
     for sku in PRICE_ORDER:
         if sku not in counts:
             continue
 
-        sku_prices = PRICES.get(sku)
-        if not sku_prices:
-            return -1
+        sku_prices = PRICES[sku]
+        # if not sku_prices:
+        #     return -1
 
         prices = _calculate_prices(sku_prices, counts[sku])
         prices.sort(key=lambda t: t[0])
@@ -60,6 +64,7 @@ def _calculate_special_price(count, offer_count, special_price, default_price) -
 def _calculate_bonus(count, special_count, bonus, default_price) -> Tuple[int, str]:
     special_count = count % special_count
     return (count * default_price, bonus * special_count)
+
 
 
 
