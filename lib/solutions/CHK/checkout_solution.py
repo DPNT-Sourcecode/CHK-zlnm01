@@ -13,7 +13,6 @@ PRICE_ORDER = ("E", "D", "C", "B", "A")
 # noinspection PyUnusedLocal
 # skus = unicode string
 def checkout(skus):
-    print("NEW\n")
     counts = Counter(skus)
     # Check for any invalid items
     if not set(PRICES.keys()).issuperset(counts.keys()):
@@ -21,20 +20,14 @@ def checkout(skus):
 
     total = 0
     for sku in PRICE_ORDER:
-        print(counts)
         if sku not in counts:
             continue
 
-        sku_prices = PRICES[sku]
-        # if not sku_prices:
-        #     return -1
-
         # Apply best price to total
-        best_price = _calculate_prices(sku_prices, counts[sku])
+        best_price = _calculate_prices(PRICES[sku], counts[sku])
         total += best_price[0]
         # Apply bonus
         bonus = best_price[1]
-        print(sku, bonus)
         if bonus:
             # Assumes all bonus letters are the same
             counts.subtract(bonus)
@@ -43,11 +36,10 @@ def checkout(skus):
 
 def _calculate_prices(sku_prices: dict, count) -> Tuple[int, str]:
     # returns list of prices and bonuses
-    default_price = sku_prices["price"]
     specials = sku_prices["special"]
     # Hacky check for bonus specials
     if specials and "bonus" in specials[0]:
-        return _calculate_bonus(count, specials[0]["count"], specials[0]["bonus"], default_price)
+        return _calculate_bonus(count, specials[0]["count"], specials[0]["bonus"], sku_prices["price"])
 
     # Run normal specials
     total = 0
@@ -59,19 +51,6 @@ def _calculate_prices(sku_prices: dict, count) -> Tuple[int, str]:
     total += count * sku_prices["price"]
     return (total, "")
 
-
-# def _calculate_special_price(count, offer_count, special_price, default_price) -> Tuple[int, str]:
-#     return (special_count * special_price + rem * default_price, "")
-
 def _calculate_bonus(count, offer_count, bonus, default_price) -> Tuple[int, str]:
-    special_count = count / offer_count
-    print(bonus, special_count, offer_count, count)
+    special_count = count // offer_count
     return (count * default_price, bonus * special_count)
-
-
-
-
-
-
-
-
