@@ -1,5 +1,5 @@
 from collections import Counter
-from typing import List, Tuple
+from typing import Tuple
 
 PRICES = {
     "A": {"price": 50, "special": [{"count": 5, "price": 200}, {"count": 3, "price": 130}]},
@@ -35,11 +35,16 @@ def checkout(skus):
     return total
 
 def _calculate_prices(sku_prices: dict, count) -> Tuple[int, str]:
-    # returns list of prices and bonuses
+    # returns price and bonus
     specials = sku_prices["special"]
     # Hacky check for bonus specials
     if specials and "bonus" in specials[0]:
-        return _calculate_bonus(count, specials[0]["count"], specials[0]["bonus"], sku_prices["price"])
+        return _calculate_bonus(
+            count,
+            specials[0]["count"],
+            specials[0]["bonus"],
+            sku_prices["price"]
+        )
 
     # Run normal specials
     total = 0
@@ -54,3 +59,4 @@ def _calculate_prices(sku_prices: dict, count) -> Tuple[int, str]:
 def _calculate_bonus(count, offer_count, bonus, default_price) -> Tuple[int, str]:
     special_count = count // offer_count
     return (count * default_price, bonus * special_count)
+
