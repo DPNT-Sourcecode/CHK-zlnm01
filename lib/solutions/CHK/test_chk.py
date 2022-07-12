@@ -11,4 +11,3 @@ assert checkout("BBBBB") == 120
 
 
 assert checkout("DABCABCABC") == 130 + 45 + 30 + 20 * 3 + 15
-
