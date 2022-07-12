@@ -34,9 +34,9 @@ def checkout(skus):
         total += best_price[0]
         # Apply bonus
         bonus = best_price[1]
+        print(sku, bonus)
         if bonus:
             # Assumes all bonus letters are the same
-            print(bonus)
             counts.subtract(bonus)
 
     return total
@@ -63,9 +63,11 @@ def _calculate_prices(sku_prices: dict, count) -> Tuple[int, str]:
 # def _calculate_special_price(count, offer_count, special_price, default_price) -> Tuple[int, str]:
 #     return (special_count * special_price + rem * default_price, "")
 
-def _calculate_bonus(count, special_count, bonus, default_price) -> Tuple[int, str]:
-    special_count = count % special_count
+def _calculate_bonus(count, offer_count, bonus, default_price) -> Tuple[int, str]:
+    special_count = count / offer_count
+    print(bonus, special_count, offer_count, count)
     return (count * default_price, bonus * special_count)
+
 
 
 
