@@ -2,7 +2,7 @@ from collections import Counter
 from typing import List, Tuple
 
 PRICES = {
-    "A": {"price": 50, "special": [{"count": 3, "price": 130}, {"count": 5, "price": 200}]},
+    "A": {"price": 50, "special": [{"count": 5, "price": 200}, {"count": 3, "price": 130}]},
     "B": {"price": 30, "special": [{"count": 2, "price": 45}]},
     "C": {"price": 20, "special": []}, # easier but less memory efficient
     "D": {"price": 15, "special": []}, # easier but less memory efficient
@@ -29,11 +29,8 @@ def checkout(skus):
         # if not sku_prices:
         #     return -1
 
-        prices = _calculate_prices(sku_prices, counts[sku])
-        prices.sort(key=lambda t: (t[1], t[0]))
-
         # Apply best price to total
-        best_price = prices[0]
+        best_price = _calculate_prices(sku_prices, counts[sku])
         total += best_price[0]
         # Apply bonus
         bonus = best_price[1]
@@ -44,28 +41,32 @@ def checkout(skus):
 
     return total
 
-def _calculate_prices(sku_prices: dict, count) -> List[Tuple[int, str]]:
+def _calculate_prices(sku_prices: dict, count) -> Tuple[int, str]:
     # returns list of prices and bonuses
-    prices = []
     default_price = sku_prices["price"]
-    # Check for specials
-    for special in sku_prices["special"]:
-        if "price" in special:
-            prices.append(_calculate_special_price(count, special["count"], special["price"], default_price))
-        elif "bonus" in special:
-            prices.append(_calculate_bonus(count, special["count"], special["bonus"], default_price))
+    specials = sku_prices["special"]
+    # Hacky check for bonus specials
+    if specials and "bonus" in specials[0]:
+        return _calculate_bonus(count, specials[0]["count"], specials[0]["bonus"], default_price)
+
+    # Run normal specials
+    total = 0
+    for special in specials:
+        special_count, count = divmod(count, special["count"])
+        total += special_count * special["price"]
+
     # Add normal price
-    prices.append((count * sku_prices["price"], ""))
-    return prices
+    total += count * sku_prices["price"]
+    return (total, "")
 
 
-def _calculate_special_price(count, offer_count, special_price, default_price) -> Tuple[int, str]:
-    special_count, rem = divmod(count, offer_count)
-    return (special_count * special_price + rem * default_price, "")
+# def _calculate_special_price(count, offer_count, special_price, default_price) -> Tuple[int, str]:
+#     return (special_count * special_price + rem * default_price, "")
 
 def _calculate_bonus(count, special_count, bonus, default_price) -> Tuple[int, str]:
     special_count = count % special_count
     return (count * default_price, bonus * special_count)
+
 
 
 
