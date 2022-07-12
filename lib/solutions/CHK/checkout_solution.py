@@ -13,14 +13,19 @@ def checkout(skus):
     counts = Counter(skus)
     total = 0
     for sku, count in counts.items():
+        sku_prices = PRICES.get(sku)
+        if not sku_prices:
+            continue
+
         # Check for specials
-        special = PRICES[sku]["special"]
+        special = sku_prices["special"]
         if special:
             special_count, count = divmod(count, special["count"])
             total += special_count * special["price"]
         # Add remaining count
-        total += count * PRICES[sku]["price"]
+        total += count * sku_prices["price"]
 
     return total
+
 
 
