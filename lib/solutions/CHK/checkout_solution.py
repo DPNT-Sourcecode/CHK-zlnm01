@@ -38,9 +38,10 @@ def _calculate_prices(sku_prices: dict, count) -> list[tuple[int, str]]:
 
 def _calculate_special_price(count, special_count, special_price, default_price) -> Tuple[int, None]:
     special_count, rem = divmod(count, special_count)
-    return special_count * special_price + rem * default_price
+    return (special_count * special_price + rem * default_price, None)
 
 def _calculate_bonus(count, special_count, bonus, default_price) -> Tuple[int, str]:
     special_count = count % special_count
     return (count * default_price, bonus * special_count)
+
 
