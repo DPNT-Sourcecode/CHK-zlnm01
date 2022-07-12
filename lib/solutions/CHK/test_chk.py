@@ -7,6 +7,7 @@ assert checkout("B") == 30
 assert checkout("C") == 20
 assert checkout("D") == 15
 
+print(checkout("AAAA"))
 assert checkout("AAAA") == 180
 assert checkout("BBBBB") == 120
 
@@ -30,3 +31,4 @@ assert checkout("AAAAAAAA") == 330
 assert checkout("AAAAAAAAA") == 380
 assert checkout("AAAAAAAAAA") == 400
 assert checkout("AAAAAAAAAAA") == 440 # cheaper than 5 + 2 * 3, assume rule generally holds so don't need to check all combos of discounts
+
