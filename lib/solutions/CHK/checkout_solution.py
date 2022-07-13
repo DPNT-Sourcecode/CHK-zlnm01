@@ -91,7 +91,3 @@ def apply_multibuy(counts: Counter) -> int:
         multis.extend((sku, PRICES[sku][0]["price"]) for _ in range(counts[sku]))
 
     # multi_count =
-
-
-
-
