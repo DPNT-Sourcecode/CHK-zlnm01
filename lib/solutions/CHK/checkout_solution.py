@@ -2,15 +2,12 @@ from collections import Counter
 from typing import Tuple
 
 PRICES = {
-    "A": {
-        "price": 50,
-        "special": [{"count": 5, "price": 200}, {"count": 3, "price": 130}],
-    },
-    "B": {"price": 30, "special": [{"count": 2, "price": 45}]},
-    "C": {"price": 20, "special": []},  # easier but less memory efficient
-    "D": {"price": 15, "special": []},  # easier but less memory efficient
-    "E": {"price": 40, "special": [{"count": 2, "bonus": "B"}]},
-    "F": {"price": 10, "special": [{"count": 3, "price": 20}]},
+    "A": [{"count": 5, "price": 200}, {"count": 3, "price": 130}, {"price": 50}],
+    "B": [{"count": 2, "price": 45}, {"price": 30}],
+    "C": [{"price": 20}],
+    "D": [{"price": 15}],
+    "E": [{"count": 2, "price": 40, "bonus": "B"}, {"price": 40}],
+    "F": [{"count": 3, "price": 20}, {"price": 10}],
 }
 PRICE_ORDER = ("F", "E", "D", "C", "B", "A")
 
@@ -64,4 +61,5 @@ def _calculate_prices(sku_prices: dict, count) -> Tuple[int, str]:
 def _calculate_bonus(count, offer_count, bonus, default_price) -> Tuple[int, str]:
     special_count = count // offer_count
     return (count * default_price, bonus * special_count)
+
 
