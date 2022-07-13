@@ -61,6 +61,3 @@ def _calculate_prices(sku_prices: dict, count) -> Tuple[int, str]:
 def _calculate_bonus(count, offer_count, bonus, default_price) -> Tuple[int, str]:
     special_count = count // offer_count
     return (count * default_price, bonus * special_count)
-
-
-
