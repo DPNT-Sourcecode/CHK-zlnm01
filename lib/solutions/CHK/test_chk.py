@@ -72,8 +72,17 @@ class Test(unittest.TestCase):
             ("X", 17),
             ("Y", 20),
             ("Z", 21),
+            # CHK_R5 test
+            ("SSS", 45),
+            ("TTT", 45),
+            ("XXX", 45),
+            ("YYY", 45),
+            ("ZZZ", 45),
+            ("ZXYST", 45 + 20 + 17),
+            ("ZXYSTZ", 45 + 45),
         ]
     )
     def test_checkout_price(self, input, expected):
         self.assertEqual(checkout(input), expected)
+
 
