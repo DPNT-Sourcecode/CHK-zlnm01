@@ -12,7 +12,7 @@ PRICES = {
     "H": [{"count": 10, "price": 80}, {"count": 5, "price": 45}, {"price": 10}],
     "I": [{"price": 35}],
     "J": [{"price": 60}],
-    "K": [{"count": 2, "price": 150}, {"price": 70}],
+    "K": [{"count": 2, "price": 120}, {"price": 70}],
     "L": [{"price": 90}],
     "M": [{"price": 15}],
     "N": [{"count": 3, "bonus": "M"}, {"price": 40}],
@@ -77,4 +77,5 @@ def _apply_bonus(count, offer_count, bonus, counts: Counter) -> bool:
     if counts[bonus] < 0:
         counts[bonus] = 0
     return True
+
 
