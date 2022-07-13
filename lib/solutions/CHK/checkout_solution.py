@@ -1,36 +1,12 @@
 from collections import Counter
-from typing import Tuple
+from constants import (
+    PRICES,
+    PRICE_ORDER,
+    MULTIBUY_COUNT,
+    MULTIBUY_PRICE,
+    MULTIBUY_SKUS,
+)
 
-PRICES = {
-    "A": [{"count": 5, "price": 200}, {"count": 3, "price": 130}, {"price": 50}],
-    "B": [{"count": 2, "price": 45}, {"price": 30}],
-    "C": [{"price": 20}],
-    "D": [{"price": 15}],
-    "E": [{"count": 2, "bonus": "B"}, {"price": 40}],
-    "F": [{"count": 3, "price": 20}, {"price": 10}],
-    "G": [{"price": 20}],
-    "H": [{"count": 10, "price": 80}, {"count": 5, "price": 45}, {"price": 10}],
-    "I": [{"price": 35}],
-    "J": [{"price": 60}],
-    "K": [{"count": 2, "price": 120}, {"price": 70}],
-    "L": [{"price": 90}],
-    "M": [{"price": 15}],
-    "N": [{"count": 3, "bonus": "M"}, {"price": 40}],
-    "O": [{"price": 10}],
-    "P": [{"count": 5, "price": 200}, {"price": 50}],
-    "Q": [{"count": 3, "price": 80}, {"price": 30}],
-    "R": [{"count": 3, "bonus": "Q"}, {"price": 50}],
-    "S": [{"price": 20}],
-    "T": [{"price": 20}],
-    "U": [{"count": 4, "price": 120}, {"price": 40}],
-    "V": [{"count": 3, "price": 130}, {"count": 2, "price": 90}, {"price": 50}],
-    "W": [{"price": 20}],
-    "X": [{"price": 17}],
-    "Y": [{"price": 20}],
-    "Z": [{"price": 21}],
-}
-# Luckily any bonus is always given to an SKU earlier in the alphabet
-PRICE_ORDER = sorted(PRICES.keys(), reverse=True)
 
 # noinspection PyUnusedLocal
 # skus = unicode string
@@ -41,7 +17,7 @@ def checkout(skus):
         return -1
 
     # Apply any multibuy offers first as cheaper
-    total = apply_multibuy(counts)
+    total = _apply_multibuy(counts)
 
     for sku in PRICE_ORDER:
         if sku not in counts:
@@ -54,7 +30,10 @@ def checkout(skus):
 
 
 def _calculate_prices(sku_prices: dict, count: int, counts: Counter) -> int:
-    # returns price and bonus
+    """Finds best offer combinations
+    Assumes that offers are in order of most price efficient
+    and no combo will be better than giving most of each offer level.
+    """
     total = 0
     for price in sku_prices:
         p_count = price.get("count", 1)
@@ -68,6 +47,11 @@ def _calculate_prices(sku_prices: dict, count: int, counts: Counter) -> int:
 
 
 def _apply_bonus(count, offer_count, bonus, counts: Counter) -> bool:
+    """Checks if price is a bonus and removes bonus SKUs from price
+
+    Requires SKUs to be iterated in correct order
+    Does not apply a price from bonus (unchecked)
+    """
     if not bonus:
         return False
 
@@ -80,12 +64,7 @@ def _apply_bonus(count, offer_count, bonus, counts: Counter) -> bool:
     return True
 
 
-MULTIBUY_SKUS = ("Z", "Y", "S", "T", "X")
-MULTIBUY_COUNT = 3
-MULTIBUY_PRICE = 45
-
-
-def apply_multibuy(counts: Counter) -> int:
+def _apply_multibuy(counts: Counter) -> int:
     """Checks for existence of multibuy values, finds most expensive combo and applies"""
     multis = []
     for sku in MULTIBUY_SKUS:
@@ -97,6 +76,7 @@ def apply_multibuy(counts: Counter) -> int:
     # Remove multibuy skus from counts
     counts.subtract(m[0] for m in multis[: multi_count * MULTIBUY_COUNT])
     return multi_count * MULTIBUY_PRICE
+
 
 
 
