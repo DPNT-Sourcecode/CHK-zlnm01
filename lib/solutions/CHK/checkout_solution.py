@@ -45,30 +45,20 @@ def checkout(skus):
             continue
 
         # Apply best price to total
-        best_price = _calculate_prices(PRICES[sku], counts[sku])
+        best_price = _calculate_prices(PRICES[sku], counts[sku], counts)
         total += best_price[0]
-        # Apply bonus
-        bonus = best_price[1]
-        if bonus:
-            # Assumes all bonus letters are the same
-            counts.subtract(bonus)
-            if counts[bonus[0]] < 0:
-                counts[bonus[0]] = 0
 
     return total
 
 
-def _calculate_prices(sku_prices: dict, count) -> Tuple[int, str]:
+def _calculate_prices(sku_prices: dict, count: int, counts: Counter) -> Tuple[int, str]:
     # returns price and bonus
     total = 0
     bonus = ""
     for price in sku_prices:
         print(sku_prices)
         p_count = price.get("count", 1)
-        new_bonus = _calculate_bonus(count, p_count, price.get("bonus"))
-        # Don't price bonus offers
-        if new_bonus:
-            bonus += new_bonus
+        if _apply_bonus(count, p_count, price.get("bonus"), counts):
             continue
 
         price_count, count = divmod(count, p_count)
@@ -77,10 +67,17 @@ def _calculate_prices(sku_prices: dict, count) -> Tuple[int, str]:
     return (total, bonus)
 
 
-def _calculate_bonus(count, offer_count, bonus) -> str:
+def _apply_bonus(count, offer_count, bonus, counts: Counter) -> bool:
     if not bonus:
-        return ""
+        return False
+
     special_count = count // offer_count
-    return bonus * special_count
+    # Subtract bonus from counts
+    counts.subtract(bonus * special_count)
+    # Ensure no negative counts
+    if counts[bonus] < 0:
+        counts[bonus] = 0
+    return True
+
 
 
