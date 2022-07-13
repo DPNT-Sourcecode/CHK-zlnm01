@@ -17,7 +17,7 @@ class Test(unittest.TestCase):
             ("BBBBB", 120),
             ("DABCABCABC", 130 + 45 + 30 + 20 * 3 + 15),
             # Invalid
-            ("DEF", -1),
+            ("DEY", -1),
             ("a", -1),
             # CHK_R2 test
             # EEB asserts
@@ -33,8 +33,16 @@ class Test(unittest.TestCase):
             ("AAAAAAAAAA", 400),
             # cheaper than 5 + 2 * 3, assume rule generally holds so don't need to check all combos of discounts
             ("AAAAAAAAAAA", 450),
+            # CHK_R3 test
+            ("F", 10),
+            ("FF", 20),
+            ("FFF", 20),
+            ("FFFF", 30),
+            ("FFFFF", 40),
+            ("FFFFFF", 40),
         ]
     )
     def test_checkout_price(self, input, expected):
         self.assertEqual(checkout(input), expected)
+
 

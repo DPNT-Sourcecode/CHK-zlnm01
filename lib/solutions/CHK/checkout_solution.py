@@ -2,13 +2,17 @@ from collections import Counter
 from typing import Tuple
 
 PRICES = {
-    "A": {"price": 50, "special": [{"count": 5, "price": 200}, {"count": 3, "price": 130}]},
+    "A": {
+        "price": 50,
+        "special": [{"count": 5, "price": 200}, {"count": 3, "price": 130}],
+    },
     "B": {"price": 30, "special": [{"count": 2, "price": 45}]},
-    "C": {"price": 20, "special": []}, # easier but less memory efficient
-    "D": {"price": 15, "special": []}, # easier but less memory efficient
+    "C": {"price": 20, "special": []},  # easier but less memory efficient
+    "D": {"price": 15, "special": []},  # easier but less memory efficient
     "E": {"price": 40, "special": [{"count": 2, "bonus": "B"}]},
+    "F": {"price": 10, "special": [{"count": 3, "price": 20}]},
 }
-PRICE_ORDER = ("E", "D", "C", "B", "A")
+PRICE_ORDER = ("F", "E", "D", "C", "B", "A")
 
 # noinspection PyUnusedLocal
 # skus = unicode string
@@ -36,16 +40,14 @@ def checkout(skus):
 
     return total
 
+
 def _calculate_prices(sku_prices: dict, count) -> Tuple[int, str]:
     # returns price and bonus
     specials = sku_prices["special"]
     # Hacky check for bonus specials
     if specials and "bonus" in specials[0]:
         return _calculate_bonus(
-            count,
-            specials[0]["count"],
-            specials[0]["bonus"],
-            sku_prices["price"]
+            count, specials[0]["count"], specials[0]["bonus"], sku_prices["price"]
         )
 
     # Run normal specials
@@ -58,6 +60,8 @@ def _calculate_prices(sku_prices: dict, count) -> Tuple[int, str]:
     total += count * sku_prices["price"]
     return (total, "")
 
+
 def _calculate_bonus(count, offer_count, bonus, default_price) -> Tuple[int, str]:
     special_count = count // offer_count
     return (count * default_price, bonus * special_count)
+
