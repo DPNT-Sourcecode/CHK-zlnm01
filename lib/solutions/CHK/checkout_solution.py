@@ -1,5 +1,5 @@
 from collections import Counter
-from constants import (
+from .constants import (
     PRICES,
     PRICE_ORDER,
     MULTIBUY_COUNT,
@@ -76,6 +76,7 @@ def _apply_multibuy(counts: Counter) -> int:
     # Remove multibuy skus from counts
     counts.subtract(m[0] for m in multis[: multi_count * MULTIBUY_COUNT])
     return multi_count * MULTIBUY_PRICE
+
 
 
 
