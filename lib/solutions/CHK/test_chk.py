@@ -53,7 +53,7 @@ class Test(unittest.TestCase):
             ("L", 90),
             ("M", 15),
             ("N", 40),
-            ("MNNNNMM", 4 * 30 + 2 * 15),
+            ("MNNNNMM", 4 * 40 + 2 * 15),
             ("O", 10),
             ("P", 50),
             ("P" * 6, 200 + 50),
@@ -76,6 +76,7 @@ class Test(unittest.TestCase):
     )
     def test_checkout_price(self, input, expected):
         self.assertEqual(checkout(input), expected)
+
 
 
 
