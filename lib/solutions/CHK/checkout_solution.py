@@ -81,6 +81,7 @@ def _apply_bonus(count, offer_count, bonus, counts: Counter) -> bool:
 
 
 MULTIBUY_SKUS = ("Z", "Y", "S", "T", "X")
+MULTIBUY_COUNT = 3
 MULTIBUY_PRICE = 45
 
 
@@ -89,5 +90,12 @@ def apply_multibuy(counts: Counter) -> int:
     multis = []
     for sku in MULTIBUY_SKUS:
         multis.extend((sku, PRICES[sku][0]["price"]) for _ in range(counts[sku]))
+    multis.sort(key=lambda m: m[1], reverse=True)
 
-    # multi_count =
+    # Calculate eligible multibuy offers
+    multi_count, rem = divmod(len(multis), MULTIBUY_COUNT)
+    # Remove multibuy skus from counts
+    print("mul", multis, multis[:-rem])
+    counts.subtract(m[0] for m in multis[:-rem])
+    return multi_count * MULTIBUY_PRICE
+
