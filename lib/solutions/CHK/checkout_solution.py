@@ -6,7 +6,7 @@ PRICES = {
     "B": [{"count": 2, "price": 45}, {"price": 30}],
     "C": [{"price": 20}],
     "D": [{"price": 15}],
-    "E": [{"count": 2, "price": 40, "bonus": "B"}, {"price": 40}],
+    "E": [{"count": 2, "bonus": "B"}, {"price": 40}],
     "F": [{"count": 3, "price": 20}, {"price": 10}],
 }
 PRICE_ORDER = ("F", "E", "D", "C", "B", "A")
@@ -40,26 +40,24 @@ def checkout(skus):
 
 def _calculate_prices(sku_prices: dict, count) -> Tuple[int, str]:
     # returns price and bonus
-    specials = sku_prices["special"]
-    # Hacky check for bonus specials
-    if specials and "bonus" in specials[0]:
-        return _calculate_bonus(
-            count, specials[0]["count"], specials[0]["bonus"], sku_prices["price"]
-        )
-
-    # Run normal specials
     total = 0
-    for special in specials:
-        special_count, count = divmod(count, special["count"])
-        total += special_count * special["price"]
+    bonus = ""
+    for price in sku_prices:
+        p_count = price.get("count", 1)
+        new_bonus = _calculate_bonus(count, p_count, price.get("bonus"))
+        # Don't price bonus offers
+        if new_bonus:
+            bonus += new_bonus
+            continue
 
-    # Add normal price
-    total += count * sku_prices["price"]
-    return (total, "")
+        price_count, count = divmod(count, p_count)
+        total += price_count * price["price"]
+
+    return (total, bonus)
 
 
-def _calculate_bonus(count, offer_count, bonus, default_price) -> Tuple[int, str]:
+def _calculate_bonus(count, offer_count, bonus) -> str:
+    if not bonus:
+        return ""
     special_count = count // offer_count
-    return (count * default_price, bonus * special_count)
-
-
+    return bonus * special_count

@@ -44,5 +44,3 @@ class Test(unittest.TestCase):
     )
     def test_checkout_price(self, input, expected):
         self.assertEqual(checkout(input), expected)
-
-
