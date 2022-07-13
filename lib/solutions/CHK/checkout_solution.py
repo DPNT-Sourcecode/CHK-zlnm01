@@ -77,7 +77,3 @@ def _apply_bonus(count, offer_count, bonus, counts: Counter) -> bool:
     if counts[bonus] < 0:
         counts[bonus] = 0
     return True
-
-
-
-
