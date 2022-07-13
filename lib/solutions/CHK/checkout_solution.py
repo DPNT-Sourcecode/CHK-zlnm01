@@ -94,8 +94,10 @@ def apply_multibuy(counts: Counter) -> int:
 
     # Calculate eligible multibuy offers
     multi_count, rem = divmod(len(multis), MULTIBUY_COUNT)
+    print(multi_count, rem)
     # Remove multibuy skus from counts
     print("mul", multis, multis[:-rem])
-    counts.subtract(m[0] for m in multis[:-rem])
+    counts.subtract(m[0] for m in multis[-rem:])
     return multi_count * MULTIBUY_PRICE
+
 
