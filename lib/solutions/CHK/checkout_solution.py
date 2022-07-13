@@ -8,6 +8,26 @@ PRICES = {
     "D": [{"price": 15}],
     "E": [{"count": 2, "bonus": "B"}, {"price": 40}],
     "F": [{"count": 3, "price": 20}, {"price": 10}],
+    "G": [{"price": 20}],
+    "H": [{"count": 10, "price": 80}, {"count": 5, "price": 45}, {"price": 10}],
+    "I": [{"price": 35}],
+    "J": [{"price": 60}],
+    "K": [{"count": 2, "price": 150}, {"price": 80}],
+    "L": [{"price": 90}],
+    "M": [{"price": 15}],
+    "N": [{"count": 3, "bonus": "M"}, {"price": 40}],
+    "O": [{"price": 10}],
+    "P": [{"count": 5, "price": 200}, {"price": 50}],
+    "Q": [{"count": 3, "price": 80}, {"price": 30}],
+    "R": [{"count": 3, "bonus": "Q"}, {"price": 50}],
+    "S": [{"price": 30}],
+    "T": [{"price": 20}],
+    "U": [{"count": 4, "price": 120}, {"price": 40}],
+    "V": [{"count": 3, "price": 130}, {"count": 2, "price": 90}, {"price": 50}],
+    "W": [{"price": 20}],
+    "X": [{"price": 90}],
+    "Y": [{"price": 10}],
+    "Z": [{"price": 50}],
 }
 PRICE_ORDER = ("F", "E", "D", "C", "B", "A")
 
@@ -61,3 +81,4 @@ def _calculate_bonus(count, offer_count, bonus) -> str:
         return ""
     special_count = count // offer_count
     return bonus * special_count
+
