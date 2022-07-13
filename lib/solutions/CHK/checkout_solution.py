@@ -29,7 +29,7 @@ PRICES = {
     "Y": [{"price": 10}],
     "Z": [{"price": 50}],
 }
-PRICE_ORDER = ("F", "E", "D", "C", "B", "A")
+PRICE_ORDER = sorted(PRICES.keys(), reverse=True)
 
 # noinspection PyUnusedLocal
 # skus = unicode string
@@ -56,7 +56,6 @@ def _calculate_prices(sku_prices: dict, count: int, counts: Counter) -> Tuple[in
     total = 0
     bonus = ""
     for price in sku_prices:
-        print(sku_prices)
         p_count = price.get("count", 1)
         if _apply_bonus(count, p_count, price.get("bonus"), counts):
             continue
@@ -78,6 +77,7 @@ def _apply_bonus(count, offer_count, bonus, counts: Counter) -> bool:
     if counts[bonus] < 0:
         counts[bonus] = 0
     return True
+
 
 
 
