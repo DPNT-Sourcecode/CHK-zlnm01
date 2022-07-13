@@ -39,7 +39,8 @@ def checkout(skus):
     if not set(PRICES.keys()).issuperset(counts.keys()):
         return -1
 
-    total = 0
+    total = apply_multibuy(counts)
+
     for sku in PRICE_ORDER:
         if sku not in counts:
             continue
@@ -77,5 +78,11 @@ def _apply_bonus(count, offer_count, bonus, counts: Counter) -> bool:
     if counts[bonus] < 0:
         counts[bonus] = 0
     return True
+
+
+def apply_multibuy(counts: Counter) -> int:
+    """Checks for existence of multibuy values, finds most expensive combo and applies"""
+    return 0
+
 
 

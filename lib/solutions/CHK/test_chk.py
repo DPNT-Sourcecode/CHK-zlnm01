@@ -42,14 +42,14 @@ class Test(unittest.TestCase):
             ("FFFFF", 40),
             ("FFFFFF", 40),
             # CHK_R4 test
-            ("DEY", 65),
+            ("DEY", 75),
             ("G", 20),
             ("H", 10),
             ("H" * 16, 80 + 45 + 10),
             ("I", 35),
             ("J", 60),
-            ("K", 80),
-            ("K" * 3, 150 + 80),
+            ("K", 70),
+            ("K" * 3, 120 + 70),
             ("L", 90),
             ("M", 15),
             ("N", 40),
@@ -61,7 +61,7 @@ class Test(unittest.TestCase):
             ("Q" * 4, 80 + 30),
             ("R", 50),
             ("RRRRQQ", 50 * 4 + 1 * 30),
-            ("S", 30),
+            ("S", 20),
             ("T", 20),
             ("U", 40),
             ("U" * 5, 120 + 40),
@@ -69,10 +69,11 @@ class Test(unittest.TestCase):
             ("V" * 7, 130 * 2 + 50),
             ("V" * 5, 130 + 90),
             ("W", 20),
-            ("X", 90),
-            ("Y", 10),
-            ("Z", 50),
+            ("X", 17),
+            ("Y", 20),
+            ("Z", 21),
         ]
     )
     def test_checkout_price(self, input, expected):
         self.assertEqual(checkout(input), expected)
+
