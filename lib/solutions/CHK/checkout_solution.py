@@ -29,6 +29,7 @@ PRICES = {
     "Y": [{"price": 20}],
     "Z": [{"price": 21}],
 }
+# Luckily any bonus is always given to an SKU earlier in the alphabet
 PRICE_ORDER = sorted(PRICES.keys(), reverse=True)
 
 # noinspection PyUnusedLocal
@@ -39,6 +40,7 @@ def checkout(skus):
     if not set(PRICES.keys()).issuperset(counts.keys()):
         return -1
 
+    # Apply any multibuy offers first as cheaper
     total = apply_multibuy(counts)
 
     for sku in PRICE_ORDER:
@@ -46,16 +48,14 @@ def checkout(skus):
             continue
 
         # Apply best price to total
-        best_price = _calculate_prices(PRICES[sku], counts[sku], counts)
-        total += best_price[0]
+        total += _calculate_prices(PRICES[sku], counts[sku], counts)
 
     return total
 
 
-def _calculate_prices(sku_prices: dict, count: int, counts: Counter) -> Tuple[int, str]:
+def _calculate_prices(sku_prices: dict, count: int, counts: Counter) -> int:
     # returns price and bonus
     total = 0
-    bonus = ""
     for price in sku_prices:
         p_count = price.get("count", 1)
         if _apply_bonus(count, p_count, price.get("bonus"), counts):
@@ -64,7 +64,7 @@ def _calculate_prices(sku_prices: dict, count: int, counts: Counter) -> Tuple[in
         price_count, count = divmod(count, p_count)
         total += price_count * price["price"]
 
-    return (total, bonus)
+    return total
 
 
 def _apply_bonus(count, offer_count, bonus, counts: Counter) -> bool:
@@ -97,6 +97,7 @@ def apply_multibuy(counts: Counter) -> int:
     # Remove multibuy skus from counts
     counts.subtract(m[0] for m in multis[: multi_count * MULTIBUY_COUNT])
     return multi_count * MULTIBUY_PRICE
+
 
 
 
