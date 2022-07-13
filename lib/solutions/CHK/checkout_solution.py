@@ -63,6 +63,7 @@ def _calculate_prices(sku_prices: dict, count) -> Tuple[int, str]:
     total = 0
     bonus = ""
     for price in sku_prices:
+        print(sku_prices)
         p_count = price.get("count", 1)
         new_bonus = _calculate_bonus(count, p_count, price.get("bonus"))
         # Don't price bonus offers
@@ -81,4 +82,5 @@ def _calculate_bonus(count, offer_count, bonus) -> str:
         return ""
     special_count = count // offer_count
     return bonus * special_count
+
 
