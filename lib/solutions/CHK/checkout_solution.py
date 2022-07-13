@@ -80,9 +80,18 @@ def _apply_bonus(count, offer_count, bonus, counts: Counter) -> bool:
     return True
 
 
+MULTIBUY_SKUS = ("Z", "Y", "S", "T", "X")
+MULTIBUY_PRICE = 45
+
+
 def apply_multibuy(counts: Counter) -> int:
     """Checks for existence of multibuy values, finds most expensive combo and applies"""
-    return 0
+    multis = []
+    for sku in MULTIBUY_SKUS:
+        multis.extend((sku, PRICES[sku][0]["price"]) for _ in range(counts[sku]))
+
+    # multi_count =
+
 
 
 
