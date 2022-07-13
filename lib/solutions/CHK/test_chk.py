@@ -9,6 +9,7 @@ class Test(unittest.TestCase):
     @parameterized.expand(
         [
             # CHK_R1 test
+            ("", 0),
             ("A", 50),
             ("B", 30),
             ("C", 20),
@@ -44,20 +45,29 @@ class Test(unittest.TestCase):
             ("DEY", 65),
             ("G", 20),
             ("H", 10),
+            ("H" * 16, 80 + 45 + 10),
             ("I", 35),
             ("J", 60),
             ("K", 80),
+            ("K" * 3, 150 + 80),
             ("L", 90),
             ("M", 15),
             ("N", 40),
+            ("MNNNNMM", 4 * 30 + 2 * 15),
             ("O", 10),
             ("P", 50),
+            ("P" * 6, 200 + 50),
             ("Q", 30),
+            ("Q" * 4, 80 + 30),
             ("R", 50),
+            ("RRRRQQ", 50 * 4 + 1 * 30),
             ("S", 30),
             ("T", 20),
             ("U", 40),
+            ("U" * 5, 120 + 40),
             ("V", 50),
+            ("V" * 7, 130 * 2 + 50),
+            ("V" * 5, 130 + 90),
             ("W", 20),
             ("X", 90),
             ("Y", 10),
@@ -66,6 +76,7 @@ class Test(unittest.TestCase):
     )
     def test_checkout_price(self, input, expected):
         self.assertEqual(checkout(input), expected)
+
 
 
 
