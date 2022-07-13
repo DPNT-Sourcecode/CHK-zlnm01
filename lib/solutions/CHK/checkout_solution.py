@@ -97,7 +97,11 @@ def apply_multibuy(counts: Counter) -> int:
     print(multi_count, rem)
     # Remove multibuy skus from counts
     print("mul", multis, multis[:-rem])
-    counts.subtract(m[0] for m in multis[-rem:])
-    return multi_count * MULTIBUY_PRICE
+    counts.subtract(m[0] for m in multis[: multi_count * MULTIBUY_COUNT])
+
+    m = multi_count * MULTIBUY_PRICE
+    print(m, counts)
+    return m
+
 
 
